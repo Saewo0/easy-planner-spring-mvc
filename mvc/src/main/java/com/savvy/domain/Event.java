@@ -1,0 +1,80 @@
+package com.savvy.domain;
+
+import javax.persistence.*;
+import java.time.OffsetDateTime;
+
+import static javax.persistence.GenerationType.SEQUENCE;
+
+
+@Entity
+@Table(name = "events")
+public class Event {
+    @Id
+    @GeneratedValue(strategy = SEQUENCE, generator = "events_id_seq")
+    @SequenceGenerator(name = "events_id_seq", sequenceName = "events_id_seq", allocationSize = 1)
+    private Long id;
+    @Column(name = "event_name")
+    private String eventName;
+    @Column
+    private String dest;
+    @Column(name = "dest_id")
+    private String destId;
+    @Column(name = "start_date_time")
+    private OffsetDateTime startDateTime;
+    @Column(name = "end_date_time")
+    private OffsetDateTime endDateTime;
+//    @Column(name = "participants")
+//    private String[] participants;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "host_id")
+    private User host;
+    // must we store all the host information in every event??
+
+    public void setEventName(String eventName) {
+        this.eventName = eventName;
+    }
+
+    public void setDest(String dest) {
+        this.dest = dest;
+    }
+
+    public void setDestId(String destId) {
+        this.destId = destId;
+    }
+
+    public void setStartDateTime(OffsetDateTime startDateTime) {
+        this.startDateTime = startDateTime;
+    }
+
+    public void setEndDateTime(OffsetDateTime endDateTime) {
+        this.endDateTime = endDateTime;
+    }
+
+    public void setHost(User host) {
+        this.host = host;
+    }
+
+    public OffsetDateTime getStartDateTime() {
+        return startDateTime;
+    }
+
+    public OffsetDateTime getEndDateTime() {
+        return endDateTime;
+    }
+
+    public String getEventName() {
+        return eventName;
+    }
+
+    public String getDest() {
+        return dest;
+    }
+
+    public String getDestId() {
+        return destId;
+    }
+
+    public User getHost() {
+        return host;
+    }
+}
