@@ -33,20 +33,21 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
+    @Transactional
     public User findByIdEager(Long id) {
-//        String hql_findByIdEager = "FROM User u where u.id = :userId";
-//        Session session = sessionFactory.getCurrentSession();
-//        TypedQuery<User> query = session.createQuery(hql_findByIdEager);
-//        query.setParameter("userId", id);
-//        return query.getSingleResult();
-        return null;
+        String hql_findByIdEager = "FROM User u LEFT JOIN FETCH u.events where u.id = :userId";
+        Session session = sessionFactory.getCurrentSession();
+        TypedQuery<User> query = session.createQuery(hql_findByIdEager);
+        query.setParameter("userId", id);
+        return query.getSingleResult();
     }
 
     @Override
+    @Transactional
     public User findById(Long id) {
-        String hql_findByIdEager = "FROM User u where u.id = :userId";
+        String hql_findById = "FROM User u where u.id = :userId";
         Session session = sessionFactory.getCurrentSession();
-        TypedQuery<User> query = session.createQuery(hql_findByIdEager);
+        TypedQuery<User> query = session.createQuery(hql_findById);
         query.setParameter("userId", id);
         return query.getSingleResult();
     }

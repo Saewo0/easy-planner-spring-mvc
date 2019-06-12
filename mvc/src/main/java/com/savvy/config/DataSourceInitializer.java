@@ -5,21 +5,32 @@ import org.hibernate.SessionFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.orm.hibernate5.HibernateTransactionManager;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.sql.DataSource;
 import java.util.Properties;
 
 @Configuration
+@EnableTransactionManagement
 public class DataSourceInitializer {
     private final Logger logger = LoggerFactory.getLogger(getClass());
-    protected String databaseUrl = "jdbc:postgresql://localhost:5432/easy_planner";
-    protected String databaseUserName = "admin";
-    protected String databasePassword = "password";
+
+    @Value("${database.serverName}")
+    protected String databaseUrl;
+
+    @Value("${database.username}")
+    protected String databaseUserName;
+
+    @Value("${database.password}")
+    protected String databasePassword;
+
+    // @Value("#{databaseProperties['database.dataSourceClassName']}")
     protected String driverClassName="org.postgresql.ds.PGSimpleDataSource";
 
     @Bean(name = "dataSource")
@@ -33,6 +44,7 @@ public class DataSourceInitializer {
         BasicDataSource dataSource = new BasicDataSource();
 
         dataSource.setDriverClassName(driverClassName);
+        logger.debug("retrieve database serverName: " + databaseUrl);
         dataSource.setUrl(databaseUrl);
         dataSource.setUsername(databaseUserName);
         dataSource.setPassword(databasePassword);

@@ -3,14 +3,10 @@ package com.savvy.config;
 import com.amazonaws.auth.DefaultAWSCredentialsProviderChain;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Profile;
+import org.springframework.context.annotation.*;
 
 @Configuration
-@ComponentScan(basePackages = "com.savvy")
-
+@ComponentScan(basePackages = "com.savvy", excludeFilters = @ComponentScan.Filter(type= FilterType.REGEX, pattern = "com.savvy.api.*"))
 public class AppConfig {
 
     @Bean

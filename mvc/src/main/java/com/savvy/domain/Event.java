@@ -54,27 +54,30 @@ public class Event {
         this.host = host;
     }
 
+    public Long getId () {
+        return this.id;
+    }
     public OffsetDateTime getStartDateTime() {
-        return startDateTime;
+        return this.startDateTime;
     }
 
     public OffsetDateTime getEndDateTime() {
-        return endDateTime;
+        return this.endDateTime;
     }
 
     public String getEventName() {
-        return eventName;
+        return this.eventName;
     }
 
     public String getDest() {
-        return dest;
+        return this.dest;
     }
 
     public String getDestId() {
-        return destId;
+        return this.destId;
     }
 
     public User getHost() {
-        return host;
+        return this.host;
     }
 }

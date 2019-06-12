@@ -19,7 +19,7 @@ public class User {
     @Column(name = "last_name")
     private String lastName;
     @Column(name = "username")
-    private String userName;
+    private String username;
     @Column(name = "first_name")
     private String firstName;
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "host", cascade = CascadeType.ALL)
@@ -36,7 +36,7 @@ public class User {
     }
 
     public void setUserName(String userName) {
-        this.userName = userName;
+        this.username = userName;
     }
 
     public void setFirstName(String firstName) {
@@ -45,5 +45,25 @@ public class User {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    public String getEmail() {
+        return this.email;
+    }
+
+    public String getLastName() {
+        return this.lastName;
+    }
+
+    public String getUsername() {
+        return this.username;
+    }
+
+    public String getFirstName() {
+        return this.firstName;
+    }
+
+    public List<Event> getEvents() {
+        return this.events;
     }
 }
