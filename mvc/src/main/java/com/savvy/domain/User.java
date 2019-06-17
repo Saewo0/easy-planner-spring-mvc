@@ -1,6 +1,8 @@
 package com.savvy.domain;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -23,6 +25,7 @@ public class User {
     @Column(name = "first_name")
     private String firstName;
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "host", cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<Event> events;
 //    @OneToMany(fetch = FetchType.LAZY, mappedBy = "src_id", cascade = CascadeType.DETACH)
 //    private List<User> friends;

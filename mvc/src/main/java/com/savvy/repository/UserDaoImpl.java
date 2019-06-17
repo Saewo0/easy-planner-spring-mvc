@@ -26,7 +26,7 @@ public class UserDaoImpl implements UserDao {
     @Override
     @Transactional(readOnly = true)
     public List<User> findAll() {
-        String hql_findAll = "FROM User";
+        String hql_findAll = "FROM User u";
         Session session = sessionFactory.getCurrentSession();
         TypedQuery<User> query = session.createQuery(hql_findAll);
         return query.getResultList();
