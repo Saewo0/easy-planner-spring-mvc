@@ -1,6 +1,9 @@
 # MacOS .DS_Store
 .DS_Store
 
+# Intellij IDEA .idea
+.idea
+
 # ???
 out
 target
