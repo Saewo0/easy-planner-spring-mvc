@@ -1,6 +1,8 @@
 package com.savvy.worker.service;
 
+import com.amazonaws.auth.DefaultAWSCredentialsProviderChain;
 import com.amazonaws.services.sqs.AmazonSQS;
+import com.amazonaws.services.sqs.AmazonSQSClientBuilder;
 import com.amazonaws.services.sqs.model.DeleteMessageRequest;
 import com.amazonaws.services.sqs.model.Message;
 import com.amazonaws.services.sqs.model.ReceiveMessageRequest;
@@ -16,7 +18,10 @@ import java.util.Map;
 @Service
 public class SQSMessageService {
 
-    private AmazonSQS sqsClient;
+    private AmazonSQS sqsClient = AmazonSQSClientBuilder
+            .standard()
+            .withCredentials(new DefaultAWSCredentialsProviderChain())
+            .build();
 
     @Value("${jms.queue.name}")
     private String queueName;
@@ -30,7 +35,7 @@ public class SQSMessageService {
 
     public void receiveMessage() {
         // Receive messages
-        System.out.println("Receiving messages from MyQueue.\n");
+        System.out.println("Receiving messages from MyQueue\n");
         final ReceiveMessageRequest receiveMessageRequest = new ReceiveMessageRequest(getQueueUrl(queueName));
         final List<Message> messages = sqsClient.receiveMessage(receiveMessageRequest).getMessages();
         for (final Message message : messages) {

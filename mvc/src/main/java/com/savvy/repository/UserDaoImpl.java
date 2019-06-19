@@ -51,4 +51,14 @@ public class UserDaoImpl implements UserDao {
         query.setParameter("userId", id);
         return query.getSingleResult();
     }
+
+    @Override
+    @Transactional
+    public User findByUsernameIgnoreCase(String username) {
+        String hql_findByUsernameIgnoreCase = "FROM User u where lower(u.username) = :username";
+        Session session = sessionFactory.getCurrentSession();
+        TypedQuery<User> query = session.createQuery(hql_findByUsernameIgnoreCase);
+        query.setParameter("username", username.toLowerCase());
+        return query.getSingleResult();
+    }
 }

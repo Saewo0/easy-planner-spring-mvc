@@ -12,4 +12,6 @@ public interface UserDao {
     User findByIdEager(Long id);
 
     User findById(Long id);
+
+    User findByUsernameIgnoreCase(String username);
 }

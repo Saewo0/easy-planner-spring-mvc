@@ -26,7 +26,7 @@ public class UserController {
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
-    @RequestMapping(method = RequestMethod.GET)
+    @RequestMapping(value = "/users", method = RequestMethod.GET)
     public List<User> getUserAll() {
         logger.debug("retrieve all users...");
 
@@ -66,8 +66,11 @@ public class UserController {
 //        userInfo.put("email", user.getEmail());
     }
 
-
-
+    @RequestMapping(method = RequestMethod.GET, params = "username")
+    public User getUserByUsername(@RequestParam("username") String username) {
+        logger.debug("find user by username: " + username);
+        return userDao.findByUsernameIgnoreCase(username);
+    }
 //    @RequestMapping(value = "/picture", method = RequestMethod.POST)
 //    public Map<String, String> uploadPicture(@RequestParam(name = "pic") MultipartFile picture) {
 //        logger.debug(picture.getOriginalFilename());

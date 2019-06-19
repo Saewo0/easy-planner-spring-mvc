@@ -281,5 +281,8 @@
     <orderEntry type="library" scope="TEST" name="Maven: org.powermock:powermock-core:2.0.0-beta.5" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.powermock:powermock-api-mockito2:2.0.0-beta.5" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.powermock:powermock-api-support:2.0.0-beta.5" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework.security:spring-security-core:5.0.7.RELEASE" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework.security:spring-security-web:5.0.7.RELEASE" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework.security:spring-security-config:5.0.7.RELEASE" level="project" />
   </component>
 </module>
