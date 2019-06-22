@@ -13,7 +13,6 @@ import org.springframework.test.context.web.WebAppConfiguration;
 
 import java.io.File;
 import java.net.MalformedURLException;
-import java.net.URL;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -38,12 +37,7 @@ public class StorageServiceTest {
 
     @Test
     public void getUrlTest() throws MalformedURLException {
-//        URL fakeUrl = Mockito.mock(URL.class);
-
-        Mockito.when(s3Fake.getUrl(anyString(), anyString())).thenReturn(new URL("http://IP:4567/foldername/1234?abc=xyz"));
-
         storageService.getUrl("xxxxx", "laowang.png");
-
         Mockito.verify(s3Fake, Mockito.times(1)).getUrl(anyString(), anyString());
     }
 }

@@ -59,19 +59,6 @@ public class DataSourceInitializer {
         return dataSource;
     }
 
-//    @Bean(name = "entityManagerFactory")
-//    public LocalContainerEntityManagerFactoryBean entityManagerFactoryBean() {
-//        LocalContainerEntityManagerFactoryBean factoryBean = new LocalContainerEntityManagerFactoryBean();
-//
-//        factoryBean.setDataSource(getDataSource());
-//        factoryBean.setPackagesToScan(new String[] { "com.savvy.domain" });
-//        factoryBean.setPersistenceProviderClass(HibernatePersistenceProvider.class);
-//        Properties props = getDefaultHibernate();
-//
-//        factoryBean.setJpaProperties(props);
-//        return factoryBean;
-//    }
-
     @Bean(name="hibernate4AnnotatedSessionFactory")
 //    @DependsOn("flyway")
     @Profile({"dev","test","stage","prod"})

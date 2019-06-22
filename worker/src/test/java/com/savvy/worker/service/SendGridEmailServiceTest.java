@@ -1,29 +1,41 @@
 package com.savvy.worker.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.savvy.worker.config.MockConfig;
+import com.sendgrid.Request;
+import com.sendgrid.Response;
+import com.sendgrid.SendGrid;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jms.annotation.JmsListener;
-import org.springframework.stereotype.Service;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Import;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-@Service
-public class ProcessService {
+import static org.mockito.ArgumentMatchers.any;
 
-    private final Logger logger = LoggerFactory.getLogger(getClass());
+
+@RunWith(SpringRunner.class)
+@SpringBootTest
+@Import(MockConfig.class)
+@ActiveProfiles("unit")
+public class SendGridEmailServiceTest {
 
     @Autowired
-    private SendGridEmailService sendGridEmailService;
+    SendGrid sg;
 
-    @JmsListener(destination = "easy-planner")
-    public void processMessage(String msg) throws IOException {
-        logger.debug("Processing Message: " + msg);
+    @Autowired
+    SendGridEmailService sendGridEmailService;
 
+    @Test
+    public void sendEmailTest() throws IOException {
         Map<String, String> fakeRequest = new HashMap<>();
         fakeRequest.put("username","Ryo");
         fakeRequest.put("avatar","https://easy-planner.s3.amazonaws.com/Wechat_Icon.jpg");
@@ -39,6 +51,14 @@ public class ProcessService {
 
         String fakeMessageJson = new ObjectMapper().writeValueAsString(fakeMessage);
 
+        Response fakeResponse = Mockito.mock(Response.class);
+
+        Mockito.when(sg.api(any(Request.class))).thenReturn(fakeResponse);
+
         sendGridEmailService.sendEmail(fakeMessageJson);
+
+        Mockito.verify(sg,  Mockito.times(1)).api(any(Request.class));
+
     }
+
 }

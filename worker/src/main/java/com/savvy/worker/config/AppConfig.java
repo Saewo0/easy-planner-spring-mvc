@@ -7,13 +7,13 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
 @Configuration
+@Profile({"dev", "test", "stage", "prod"})
 public class AppConfig {
 
     @Value("${sendgrid.apiKey}")
     private String apiKey;
 
     @Bean
-    @Profile({"dev", "test", "stage", "prod"})
     public SendGrid getSendGridBean(){
         return new SendGrid(apiKey);
     }

@@ -1,4 +1,4 @@
-package com.savvy.config;
+package com.savvy.worker.config;
 
 import com.amazonaws.services.sqs.AmazonSQS;
 import com.sendgrid.SendGrid;

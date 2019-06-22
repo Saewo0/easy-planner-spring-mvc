@@ -24,7 +24,6 @@ public class MessageSQSService {
     }
 
     private String getQueueUrl(String sqsName) {
-        logger.debug("messageSQSService getQueueUrl: " + sqsName + this.sqsClient.listQueues().toString());
         String queueUrl = this.sqsClient.getQueueUrl(sqsName).getQueueUrl();
         logger.debug("messageSQSService getQueueUrl result: " + queueUrl);
         return queueUrl;
