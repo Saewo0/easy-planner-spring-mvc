@@ -1,5 +1,8 @@
 package com.savvy.worker.config;
 
+import com.amazonaws.auth.DefaultAWSCredentialsProviderChain;
+import com.amazonaws.services.sqs.AmazonSQS;
+import com.amazonaws.services.sqs.AmazonSQSClientBuilder;
 import com.sendgrid.SendGrid;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -16,5 +19,13 @@ public class AppConfig {
     @Bean
     public SendGrid getSendGridBean(){
         return new SendGrid(apiKey);
+    }
+
+    @Bean
+    public AmazonSQS getAmazonSQSBean() {
+        return AmazonSQSClientBuilder
+                .standard()
+                .withCredentials(new DefaultAWSCredentialsProviderChain())
+                .build();
     }
 }

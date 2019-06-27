@@ -45,8 +45,8 @@ public class SendGridEmailServiceTest {
         Map<String, Object> fakeMessage = new HashMap<>();
         fakeMessage.put("subject", "Friend Invitation");
         fakeMessage.put("from", "test@example.com");
-        fakeMessage.put("to_emails", Arrays.asList("zhangxwsavvy@gmail.com", "xinwei.z@columbia.edu"));
-        fakeMessage.put("to_usernames", Arrays.asList("SavvyZ", "Xinwei"));
+        fakeMessage.put("to_emails", Arrays.asList("zhangxwsavvy@gmail.com"));
+        fakeMessage.put("to_usernames", Arrays.asList("SavvyZ"));
         fakeMessage.put("request", fakeRequest);
 
         String fakeMessageJson = new ObjectMapper().writeValueAsString(fakeMessage);
@@ -60,5 +60,4 @@ public class SendGridEmailServiceTest {
         Mockito.verify(sg,  Mockito.times(1)).api(any(Request.class));
 
     }
-
 }

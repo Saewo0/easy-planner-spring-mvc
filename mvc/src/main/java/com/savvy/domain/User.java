@@ -2,8 +2,11 @@ package com.savvy.domain;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import java.util.Collection;
 import java.util.List;
 
 import static javax.persistence.GenerationType.SEQUENCE;
@@ -11,17 +14,22 @@ import static javax.persistence.GenerationType.SEQUENCE;
 
 @Entity
 @Table(name = "users")
-public class User {
+public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = SEQUENCE, generator = "users_id_seq")
     @SequenceGenerator(name = "users_id_seq", sequenceName = "users_id_seq", allocationSize = 1)
     private Long id;
-    @Column
+
+    @Column(name = "username")
+    private String username;
+
+    @Column(name = "password")
+    private String password;
+
+    @Column(name = "email")
     private String email;
     @Column(name = "last_name")
     private String lastName;
-    @Column(name = "username")
-    private String username;
     @Column(name = "first_name")
     private String firstName;
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "host", cascade = CascadeType.ALL)
@@ -30,16 +38,36 @@ public class User {
 //    @OneToMany(fetch = FetchType.LAZY, mappedBy = "src_id", cascade = CascadeType.DETACH)
 //    private List<User> friends;
 
-    public Long getId() {
-        return this.id;
-    }
+    @Column(name = "enabled")
+    @JsonIgnore
+    private Boolean enabled = true;
+
+    @Column(name = "account_non_locked")
+    @JsonIgnore
+    private Boolean accountNonLocked = false;
+
+    @Column(name ="account_non_expired")
+    @JsonIgnore
+    private Boolean accountNonExpired = false;
+
+    @Column(name = "credentials_non_expired")
+    @JsonIgnore
+    private Boolean credentialsNonExpired = false;
+
+    @Transient
+    @JsonIgnore
+    private List<Authority> authorities;
 
     public void setEmail(String email) {
-        this.email = email;
+        this.email = email.toLowerCase();
     }
 
-    public void setUserName(String userName) {
+    public void setUsername(String userName) {
         this.username = userName;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public void setFirstName(String firstName) {
@@ -50,6 +78,30 @@ public class User {
         this.lastName = lastName;
     }
 
+    public void setEnabled(Boolean enabled) {
+        this.enabled = enabled;
+    }
+
+    public void setAccountNonLocked(Boolean locked) {
+        this.accountNonLocked = locked;
+    }
+
+    public void setAccountNonExpired(Boolean accountNonExpired) {
+        this.accountNonExpired = accountNonExpired;
+    }
+
+    public void setCredentialsNonExpired(Boolean expired) {
+        this.credentialsNonExpired = expired;
+    }
+
+    public void setAuthorities(List<Authority> authorities) {
+        this.authorities = authorities;
+    }
+
+    public Long getId() {
+        return this.id;
+    }
+
     public String getEmail() {
         return this.email;
     }
@@ -58,15 +110,61 @@ public class User {
         return this.lastName;
     }
 
-    public String getUsername() {
-        return this.username;
-    }
-
     public String getFirstName() {
         return this.firstName;
     }
 
     public List<Event> getEvents() {
         return this.events;
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return this.authorities;
+    }
+
+    @Override
+    public String getPassword() {
+        return this.password;
+    }
+
+    @Override
+    public String getUsername() {
+        return this.username;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return accountNonExpired;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return accountNonLocked;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return credentialsNonExpired;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        if (this == other) {
+            return true;
+        }
+
+        if (other == null || this.getClass() != other.getClass()) {
+            return false;
+        }
+
+        User u = (User) other;
+
+        return this.getId().equals(u.getId());
     }
 }

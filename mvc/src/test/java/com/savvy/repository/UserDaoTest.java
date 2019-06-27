@@ -35,15 +35,15 @@ public class UserDaoTest {
     @Test
     @Transactional
     public void findByIdTest() {
-//        assertTrue(true);
         User expectedResult = new User();
-        expectedResult.setUserName("zhang3");
+        expectedResult.setUsername("SavvyZ");
         expectedResult.setFirstName("Xinwei");
         expectedResult.setLastName("Zhang");
         expectedResult.setEmail("xinwei.z@columbia.edu");
         userDao.save(expectedResult);
         User actualResult = userDao.findById(expectedResult.getId());
         assertNotNull(actualResult);
+        assertEquals(expectedResult, actualResult);
     }
 
     @Test
@@ -51,7 +51,8 @@ public class UserDaoTest {
     public void findByIdEagerTest() {
 //        assertTrue(true);
         User expectedResult = new User();
-        expectedResult.setUserName("zhang3");
+        expectedResult.setUsername("zhang3");
+        expectedResult.setPassword("xxx");
         expectedResult.setFirstName("Xinwei");
         expectedResult.setLastName("Zhang");
         expectedResult.setEmail("xinwei.z@columbia.edu");
@@ -75,4 +76,59 @@ public class UserDaoTest {
         assertEquals(events.size(), 1);
     }
 
+    @Test
+    @Transactional
+    public void findByUsernameIgnoreCaseTest() {
+        User expectedResult = new User();
+        expectedResult.setUsername("real");
+        expectedResult.setPassword("realPassword");
+        expectedResult.setFirstName("Real");
+        expectedResult.setLastName("Test");
+        expectedResult.setEmail("realUser@test.com");
+
+        User fakeResult = new User();
+        expectedResult.setUsername("fake");
+        expectedResult.setPassword("fakePassword");
+        expectedResult.setFirstName("Fake");
+        expectedResult.setLastName("Test");
+        expectedResult.setEmail("fakeUser@test.com");
+
+        userDao.save(expectedResult);
+        userDao.save(fakeResult);
+        User actualResult = userDao.findByUsername("Real");
+
+        assertEquals(expectedResult, actualResult);
+    }
+
+    @Test
+    @Transactional
+    public void findByFirstNameIgnoreCaseTest() {
+        User expectedResult = new User();
+        expectedResult.setUsername("real");
+        expectedResult.setPassword("xxx");
+        expectedResult.setFirstName("Real");
+        expectedResult.setLastName("Test");
+        expectedResult.setEmail("realUser@test.com");
+
+        userDao.save(expectedResult);
+        List<User> actualResultList = userDao.findByFirstNameIgnoreCase(expectedResult.getFirstName());
+
+        assertEquals(expectedResult, actualResultList.get(0));
+    }
+
+    @Test
+    @Transactional
+    public void findByLastNameIgnoreCaseTest() {
+        User expectedResult = new User();
+        expectedResult.setUsername("real");
+        expectedResult.setPassword("xxx");
+        expectedResult.setFirstName("Real");
+        expectedResult.setLastName("Test");
+        expectedResult.setEmail("realUser@test.com");
+
+        userDao.save(expectedResult);
+        List<User> actualResultList = userDao.findByLastNameIgnoreCase(expectedResult.getLastName());
+
+        assertEquals(expectedResult, actualResultList.get(0));
+    }
 }

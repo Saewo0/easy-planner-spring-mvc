@@ -7,6 +7,9 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 
 @Configuration
@@ -17,20 +20,36 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     RestAuthenticationEntryPoint entryPoint;
 
     @Autowired
-    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        auth.inMemoryAuthentication()
-            .withUser("user1")
-            .password("{noop}password")
-            .roles("REGISTERED_USER");
-    }
+    private UserDetailsService userDetailsService;
 
+//    @Autowired
+//    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+//        auth.inMemoryAuthentication()
+//            .withUser("user1")
+//            .password("{noop}password")
+//            .roles("REGISTERED_USER");
+//    }
 
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()
-            .authorizeRequests().antMatchers("/api/user/users").permitAll()
-            .anyRequest().authenticated()
-            .and()
-            .exceptionHandling()
-            .authenticationEntryPoint(entryPoint);
+                .authorizeRequests().antMatchers("/api/user/register", "/api/user/login").permitAll()
+                .anyRequest().authenticated()
+                .and()
+                .formLogin();
     }
+
+    @Autowired
+    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+        PasswordEncoder encoder = new BCryptPasswordEncoder();
+        auth.userDetailsService(userDetailsService).passwordEncoder(encoder);
+    }
+
+//    protected void configure(HttpSecurity http) throws Exception {
+//        http.csrf().disable()
+//            .authorizeRequests().antMatchers("/api/user/users").permitAll()
+//            .anyRequest().authenticated()
+//            .and()
+//            .exceptionHandling()
+//            .authenticationEntryPoint(entryPoint);
+//    }
 }

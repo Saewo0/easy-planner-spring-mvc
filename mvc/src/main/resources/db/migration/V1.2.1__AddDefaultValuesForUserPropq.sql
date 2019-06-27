@@ -1,0 +1,5 @@
+ALTER TABLE users
+ALTER COLUMN account_non_expired SET DEFAULT TRUE,
+ALTER COLUMN account_non_locked SET DEFAULT TRUE,
+ALTER COLUMN credentials_non_expired SET DEFAULT TRUE,
+ALTER COLUMN enabled SET DEFAULT TRUE;

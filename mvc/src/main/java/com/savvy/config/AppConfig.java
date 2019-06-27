@@ -10,7 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.*;
 
 @Configuration
-@ComponentScan(basePackages = "com.savvy", excludeFilters = @ComponentScan.Filter(type= FilterType.REGEX, pattern = "com.savvy.api.*"))
+@ComponentScan(basePackages = "com.savvy", excludeFilters = @ComponentScan.Filter(type = FilterType.REGEX, pattern = "com.savvy.api.*"))
 public class AppConfig {
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
@@ -18,7 +18,7 @@ public class AppConfig {
     @Bean
     @Profile({"dev", "test", "stage", "prod"})
     public AmazonS3 getAmazonS3Bean() {
-        logger.debug("getAmazonS3Bean...");
+        logger.debug("Get AmazonS3Bean...");
         return AmazonS3ClientBuilder
             .standard()
             .withCredentials(new DefaultAWSCredentialsProviderChain())
@@ -28,7 +28,7 @@ public class AppConfig {
     @Bean
     @Profile({"dev", "test", "stage", "prod"})
     public AmazonSQS getAmazonSQSBean() {
-        logger.debug("getAmazonSQSBean...");
+        logger.debug("Get AmazonSQSBean...");
         return AmazonSQSClientBuilder
             .standard()
             .withCredentials(new DefaultAWSCredentialsProviderChain())

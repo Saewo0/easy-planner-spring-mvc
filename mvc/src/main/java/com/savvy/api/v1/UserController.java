@@ -2,6 +2,7 @@ package com.savvy.api.v1;
 
 import com.savvy.domain.User;
 import com.savvy.repository.UserDao;
+import com.savvy.service.UserService;
 import com.savvy.service.jms.MessageSQSService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,15 +23,18 @@ public class UserController {
     UserDao userDao;
 
     @Autowired
+    UserService userService;
+
+    @Autowired
     MessageSQSService messageSQSService;
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     @RequestMapping(value = "/users", method = RequestMethod.GET)
     public List<User> getUserAll() {
-        logger.debug("retrieve all users...");
+        logger.debug("Retrieve all users...");
 
-        List<User> users = userDao.findAll();
+        List<User> users = userService.getAll();
 
         return users;
     }
@@ -50,26 +54,18 @@ public class UserController {
         return user;
     }
 
-    @RequestMapping(value = "/create", method = RequestMethod.PUT)
+    @RequestMapping(value = "/register", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public void createUser(@RequestBody String user) {
+    public void createUser(@RequestBody User user) {
+        logger.debug("create the user info of username: " + user.getUsername());
 
-        logger.debug("create the user info of userId: " + user);
-
-
-        //messageSQSService.sendMessage(user.getEmail());
-
-//        Map<String, String> userInfo = new HashMap<>();
-//        userInfo.put("username", user.getUsername());
-//        userInfo.put("firstName", user.getFirstName());
-//        userInfo.put("lastName", user.getLastName());
-//        userInfo.put("email", user.getEmail());
+        userService.createUser(user);
     }
 
     @RequestMapping(method = RequestMethod.GET, params = "username")
     public User getUserByUsername(@RequestParam("username") String username) {
-        logger.debug("find user by username: " + username);
-        return userDao.findByUsernameIgnoreCase(username);
+        logger.debug("find user by usernames: " + username);
+        return userDao.findByUsername(username);
     }
 //    @RequestMapping(value = "/picture", method = RequestMethod.POST)
 //    public Map<String, String> uploadPicture(@RequestParam(name = "pic") MultipartFile picture) {

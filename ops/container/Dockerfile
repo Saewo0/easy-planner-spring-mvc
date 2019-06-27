@@ -2,7 +2,10 @@ FROM tomcat:9.0.10-jre8
 
 EXPOSE 8080
 
-ENV PROFILE=dev
+ARG PROFILE=dev
+ARG AWSACCESSID=ddd
+
+ENV PROFILE=${PROFILE}
 ENV AWS_REGION=us-east-1
 ENV DB_URL=localhost:5432/easy-planner
 ENV DB_PASSWORD=password

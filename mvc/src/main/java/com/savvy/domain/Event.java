@@ -80,4 +80,19 @@ public class Event {
     public User getHost() {
         return this.host;
     }
+
+    @Override
+    public boolean equals(Object other) {
+        if (this == other) {
+            return true;
+        }
+
+        if (other == null || this.getClass() != other.getClass()) {
+            return false;
+        }
+
+        Event e = (Event) other;
+
+        return this.getId().equals(e.getId());
+    }
 }

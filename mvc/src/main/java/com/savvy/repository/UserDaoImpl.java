@@ -11,25 +11,13 @@ import javax.persistence.TypedQuery;
 import java.util.List;
 
 @Repository
-public class UserDaoImpl implements UserDao {
+public class UserDaoImpl extends CRUDDaoImpl<User, Long> implements UserDao {
+
     @Autowired
     private SessionFactory sessionFactory;
 
-    @Override
-    @Transactional
-    public User save(User user) {
-        Session session = sessionFactory.getCurrentSession();
-        session.save(user);
-        return user;
-    }
-
-    @Override
-    @Transactional(readOnly = true)
-    public List<User> findAll() {
-        String hql_findAll = "FROM User u";
-        Session session = sessionFactory.getCurrentSession();
-        TypedQuery<User> query = session.createQuery(hql_findAll);
-        return query.getResultList();
+    public UserDaoImpl() {
+        super(User.class);
     }
 
     @Override
@@ -42,23 +30,39 @@ public class UserDaoImpl implements UserDao {
         return query.getSingleResult();
     }
 
-    @Override
     @Transactional
-    public User findById(Long id) {
-        String hql_findById = "FROM User u where u.id = :userId";
+    public User findByUsername(String username) {
+        String hql_findByUsername = "FROM User u where u.username = :username";
         Session session = sessionFactory.getCurrentSession();
-        TypedQuery<User> query = session.createQuery(hql_findById);
-        query.setParameter("userId", id);
+        TypedQuery<User> query = session.createQuery(hql_findByUsername);
+        query.setParameter("username", username);
         return query.getSingleResult();
     }
 
-    @Override
     @Transactional
-    public User findByUsernameIgnoreCase(String username) {
-        String hql_findByUsernameIgnoreCase = "FROM User u where lower(u.username) = :username";
+    public User findByEmailIgnoreCase(String email) {
+        String hql_findByEmail = "FROM User u where lower(u.email) = :email";
         Session session = sessionFactory.getCurrentSession();
-        TypedQuery<User> query = session.createQuery(hql_findByUsernameIgnoreCase);
-        query.setParameter("username", username.toLowerCase());
+        TypedQuery<User> query = session.createQuery(hql_findByEmail);
+        query.setParameter("email", email.toLowerCase());
         return query.getSingleResult();
+    }
+
+    @Transactional
+    public List<User> findByFirstNameIgnoreCase(String firstName) {
+        String hql_findByFirstNameIgnoreCase = "FROM User u where lower(u.firstName) = :firstName";
+        Session session = sessionFactory.getCurrentSession();
+        TypedQuery<User> query = session.createQuery(hql_findByFirstNameIgnoreCase);
+        query.setParameter("firstName", firstName.toLowerCase());
+        return query.getResultList();
+    }
+
+    @Transactional
+    public List<User> findByLastNameIgnoreCase(String lastName) {
+        String hql_findByLastNameIgnoreCase = "FROM User u where lower(u.lastName) = :lastName";
+        Session session = sessionFactory.getCurrentSession();
+        TypedQuery<User> query = session.createQuery(hql_findByLastNameIgnoreCase);
+        query.setParameter("lastName", lastName.toLowerCase());
+        return query.getResultList();
     }
 }

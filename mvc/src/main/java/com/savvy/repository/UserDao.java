@@ -4,14 +4,15 @@ import com.savvy.domain.User;
 
 import java.util.List;
 
-public interface UserDao {
-    User save(User user);
-
-    List<User> findAll();
+public interface UserDao extends CRUDDao<User, Long> {
 
     User findByIdEager(Long id);
 
-    User findById(Long id);
+    User findByUsername(String username);
 
-    User findByUsernameIgnoreCase(String username);
+    User findByEmailIgnoreCase(String email);
+
+    List<User> findByFirstNameIgnoreCase(String username);
+
+    List<User> findByLastNameIgnoreCase(String username);
 }
