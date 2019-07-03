@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface UserDao extends CRUDDao<User, Long> {
 
-    User findByIdEager(Long id);
+    User findByIdAlongWithEvents(Long id);
 
     User findByUsername(String username);
 

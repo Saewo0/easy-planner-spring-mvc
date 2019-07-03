@@ -21,8 +21,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     public UserDetails loadUserByUsername(String keyWord) {
         User domainUser = null;
         try {
-            domainUser = userService.findByUsernameOrEmail(keyWord);
-        } catch (NotFoundException|NullPointerException e) {
+            domainUser = userService.getByUsernameOrEmail(keyWord);
+        } catch (NotFoundException | NullPointerException e) {
             e.printStackTrace();
         }
 

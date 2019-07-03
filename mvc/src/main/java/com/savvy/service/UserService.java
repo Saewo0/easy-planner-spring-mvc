@@ -29,8 +29,7 @@ public class UserService {
         String encodedPassword = encoder.encode(user.getPassword());
         user.setPassword(encodedPassword);
         userDao.save(user);
-
-        addAuthorityRoleToUser(user, AuthorityRole.REGISTERED_USER);
+        addAuthorityRolesToUser(user, AuthorityRole.REGISTERED_USER);
 
         return user;
     }
@@ -46,7 +45,33 @@ public class UserService {
         return userDao.findAll();
     }
 
-    public User findByUsernameOrEmail(String usernameOrEmail) throws NotFoundException, NullPointerException {
+    @Transactional(readOnly = true)
+    public User getById(Long id) {
+        return userDao.findById(id);
+    }
+
+    @Transactional(readOnly = true)
+    public User getByIdAlongWithEvents(Long id) {
+        return userDao.findByIdAlongWithEvents(id);
+    }
+
+    @Transactional(readOnly = true)
+    public User getByUsername(String username) {
+        return userDao.findByUsername(username);
+    }
+
+    @Transactional(readOnly = true)
+    public List<User> getByFirstNameIgnoreCase(String firstName) {
+        return userDao.findByFirstNameIgnoreCase(firstName);
+    }
+
+    @Transactional(readOnly = true)
+    public List<User> getByLastNameIgnoreCase(String lastName) {
+        return userDao.findByLastNameIgnoreCase(lastName);
+    }
+
+    @Transactional(readOnly = true)
+    public User getByUsernameOrEmail(String usernameOrEmail) throws NotFoundException, NullPointerException {
         if (usernameOrEmail == null || usernameOrEmail.equals("")) {
             throw new NullPointerException("Null username or email");
         }
@@ -63,7 +88,7 @@ public class UserService {
     }
 
     @Transactional
-    public void addAuthorityRoleToUser(User user, String... authorityRoles) {
+    public void addAuthorityRolesToUser(User user, String... authorityRoles) {
 
         for (String authorityRole : authorityRoles) {
             authorityDao.save(new Authority(user, authorityRole));

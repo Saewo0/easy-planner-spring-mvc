@@ -36,10 +36,11 @@ public class UserDaoTest {
     @Transactional
     public void findByIdTest() {
         User expectedResult = new User();
-        expectedResult.setUsername("SavvyZ");
-        expectedResult.setFirstName("Xinwei");
-        expectedResult.setLastName("Zhang");
-        expectedResult.setEmail("xinwei.z@columbia.edu");
+        expectedResult.setUsername("expectedUser");
+        expectedResult.setPassword("expectedPassword");
+        expectedResult.setFirstName("Expected");
+        expectedResult.setLastName("Test");
+        expectedResult.setEmail("expected@test.com");
         userDao.save(expectedResult);
         User actualResult = userDao.findById(expectedResult.getId());
         assertNotNull(actualResult);
@@ -49,13 +50,12 @@ public class UserDaoTest {
     @Test
     @Transactional
     public void findByIdEagerTest() {
-//        assertTrue(true);
         User expectedResult = new User();
-        expectedResult.setUsername("zhang3");
-        expectedResult.setPassword("xxx");
-        expectedResult.setFirstName("Xinwei");
-        expectedResult.setLastName("Zhang");
-        expectedResult.setEmail("xinwei.z@columbia.edu");
+        expectedResult.setUsername("expectedUser");
+        expectedResult.setPassword("expectedPassword");
+        expectedResult.setFirstName("Expected");
+        expectedResult.setLastName("Test");
+        expectedResult.setEmail("expected@test.com");
         userDao.save(expectedResult);
 
         Event event = new Event();
@@ -70,7 +70,7 @@ public class UserDaoTest {
         sessionFactory.getCurrentSession().flush();
         sessionFactory.getCurrentSession().refresh(expectedResult);
 
-        User actualResult = userDao.findByIdEager(expectedResult.getId());
+        User actualResult = userDao.findByIdAlongWithEvents(expectedResult.getId());
         List<Event> events = actualResult.getEvents();
 
         assertEquals(events.size(), 1);

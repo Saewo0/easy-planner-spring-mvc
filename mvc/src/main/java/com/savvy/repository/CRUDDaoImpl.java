@@ -38,6 +38,7 @@ public class CRUDDaoImpl<T, ID> implements CRUDDao<T, ID> {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public T findById(ID id) {
         String hql_findById = "FROM " + this.entityClass.getSimpleName() + " obj where obj.id = :objId";
         Session session = sessionFactory.getCurrentSession();

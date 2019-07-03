@@ -22,7 +22,7 @@ public class UserDaoImpl extends CRUDDaoImpl<User, Long> implements UserDao {
 
     @Override
     @Transactional
-    public User findByIdEager(Long id) {
+    public User findByIdAlongWithEvents(Long id) {
         String hql_findByIdEager = "FROM User u LEFT JOIN FETCH u.events where u.id = :userId";
         Session session = sessionFactory.getCurrentSession();
         TypedQuery<User> query = session.createQuery(hql_findByIdEager);
