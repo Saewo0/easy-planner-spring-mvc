@@ -23,7 +23,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     @Autowired
-    private JwtTokenUtils jwtTokenUtils;
+    private JwtUtils jwtUtils;
 
     @Autowired
     private UserDetailsService userDetailsService;
@@ -36,10 +36,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         // Step 1: extract token
         String tokenWithBearer = httpServletRequest.getHeader(this.tokenHeader);
         if (tokenWithBearer != null && tokenWithBearer.startsWith(bear)) {
-            String token = tokenWithBearer.substring(7);
+            String token = tokenWithBearer.substring(bear.length());
 
             // Step 2: verify token
-            String username = jwtTokenUtils.getUsernameFromToken(token);
+            String username = jwtUtils.getUsernameFromToken(token);
             UserDetails userDetails = userDetailsService.loadUserByUsername(username);
                 // Substep: our own logic
             // Step 3: authenticated

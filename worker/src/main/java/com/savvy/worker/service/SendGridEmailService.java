@@ -37,7 +37,7 @@ public class SendGridEmailService {
 
     public void sendEmail(String emailJson) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
-        Map<String, Object> emailDetails = mapper.readValue(emailJson, new TypeReference<Map<String,Object>>(){});
+        Map<String, Object> emailDetails = mapper.readValue(emailJson, new TypeReference<Map<String, Object>>(){});
         String subject = emailDetails.get("subject").toString();
 
         Mail mail = new Mail();

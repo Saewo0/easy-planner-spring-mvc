@@ -4,6 +4,8 @@ import com.savvy.domain.Authority;
 import com.savvy.domain.User;
 import com.savvy.service.UserService;
 import javassist.NotFoundException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -13,7 +15,7 @@ import java.util.List;
 
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
-
+    private final Logger logger = LoggerFactory.getLogger(getClass());
     @Autowired
     private UserService userService;
 
@@ -23,7 +25,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         try {
             domainUser = userService.getByUsernameOrEmail(keyWord);
         } catch (NotFoundException | NullPointerException e) {
-            e.printStackTrace();
+            logger.error("can't find user by keyword: "+keyWord,e);
         }
 
         List<Authority> authorities = userService.getUserAuthorities(domainUser);

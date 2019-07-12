@@ -13,7 +13,7 @@ import java.util.Map;
 
 
 @Component
-public class JwtTokenUtils {
+public class JwtUtils {
 
     private static final String CLAIM_KEY_USERNAME = "sub";
     private static final String CLAIM_KEY_AUDIENCE = "audience";

@@ -1,7 +1,7 @@
 package com.savvy.api.v1;
 
 import com.savvy.domain.User;
-import com.savvy.extend.security.JwtTokenUtils;
+import com.savvy.extend.security.JwtUtils;
 import com.savvy.service.UserService;
 import com.savvy.service.jms.MessageSQSService;
 import javassist.NotFoundException;
@@ -16,7 +16,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 
 @Controller
@@ -25,16 +27,16 @@ import java.util.List;
 public class UserController {
 
     @Autowired
-    UserService userService;
+    private UserService userService;
 
     @Autowired
-    MessageSQSService messageSQSService;
+    private MessageSQSService messageSQSService;
 
     @Autowired
-    AuthenticationManager authenticationManager;
+    private AuthenticationManager authenticationManager;
 
     @Autowired
-    JwtTokenUtils jwtTokenUtils;
+    private JwtUtils jwtUtils;
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -56,12 +58,10 @@ public class UserController {
         return user;
     }
 
-    @RequestMapping(value = "/login", method = RequestMethod.POST)
+    @RequestMapping(value = "/login", method = RequestMethod.POST, produces = "application/json")
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public String printUsernameAndPassword(@RequestBody User user) {
-        logger.debug("Print the user info of username: " + user.getUsername());
-        logger.debug("Print the user info of password: " + user.getPassword());
-
+    public Map<String, String> printUsernameAndPassword(@RequestBody User user) {
+        logger.debug("Print the user info: " + user.getUsername() + " " + user.getPassword());
         UsernamePasswordAuthenticationToken notFullyAuth = new UsernamePasswordAuthenticationToken(
                 user.getUsername(),
                 user.getPassword()
@@ -71,13 +71,20 @@ public class UserController {
             authenticationManager.authenticate(notFullyAuth);
             try {
                 final UserDetails userDetails = userService.getByUsernameOrEmail(user.getUsername());
-                final String token = jwtTokenUtils.generateToken(userDetails);
-                return token;
-            } catch (NotFoundException | NullPointerException e) {
-                e.printStackTrace();
+                final String token = jwtUtils.generateToken(userDetails);
+                return Collections.singletonMap("Token", token);
+            } catch (NotFoundException nfe) {
+                nfe.printStackTrace();
+                // return something indicating user not exist
+            } catch (NullPointerException npe) {
+                npe.printStackTrace();
+                // return something indicating EMPTY username/email
+                return Collections.singletonMap("Error", "EMPTY username/email");
             }
         } catch (AuthenticationException ae) {
-            ae.printStackTrace();
+            logger.debug(ae.getMessage());
+            // return something indicating invalid username/password
+            return Collections.singletonMap("Error", "Invalid Username/Password");
         }
 
         return null;
@@ -107,25 +114,4 @@ public class UserController {
 //        logger.debug(picture.getOriginalFilename());
 //        return new HashMap<>();
 //    }
-}
-
-class TmpUserInfo {
-    private String username;
-    private String password;
-
-    public String getUsername() {
-        return this.username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getPassword() {
-        return this.password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
 }

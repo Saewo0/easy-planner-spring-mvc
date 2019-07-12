@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.net.URL;
+import java.util.concurrent.ConcurrentHashMap;
 
 @Service
 public class StorageService {
@@ -22,6 +23,8 @@ public class StorageService {
     }
 
     public URL getUrl(String bucketName, String fileName) {
+        ConcurrentHashMap<String, String> concurrentHashMap = new ConcurrentHashMap<>();
+
         return s3Client.getUrl(bucketName, fileName);
     }
 }
