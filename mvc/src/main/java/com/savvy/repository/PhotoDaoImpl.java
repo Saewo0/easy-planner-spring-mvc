@@ -12,20 +12,20 @@ import javax.persistence.TypedQuery;
 import java.util.List;
 
 @Repository
-public class EventDaoImpl extends CRUDDaoImpl<Event, Long> implements EventDao {
+public class PhotoDaoImpl extends CRUDDaoImpl<Photo, Long> implements PhotoDao {
     @Autowired
-    SessionFactory sessionFactory;
+    private SessionFactory sessionFactory;
 
-    public EventDaoImpl() {
-        super(Event.class);
+    public PhotoDaoImpl() {
+        super(Photo.class);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public List<Event> findByUserId(Long userId) {
-        String hql_findByUserId = "FROM Event event where event.host.id = :userId";
+    public List<Photo> findByUserId(Long userId) {
+        String hql_findByUserId = "FROM Photo photo where photo.owner.id = :userId";
         Session session = sessionFactory.getCurrentSession();
-        TypedQuery<Event> query = session.createQuery(hql_findByUserId);
+        TypedQuery<Photo> query = session.createQuery(hql_findByUserId);
         query.setParameter("userId", userId);
         return query.getResultList();
     }

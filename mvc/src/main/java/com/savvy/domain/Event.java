@@ -30,6 +30,11 @@ public class Event {
     private User host;
     // must we store all the host information in every event??
 
+    //TODO: event constructor
+    public Event() {
+
+    }
+
     public void setEventName(String eventName) {
         this.eventName = eventName;
     }
@@ -79,6 +84,12 @@ public class Event {
 
     public User getHost() {
         return this.host;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        return prime + this.id.hashCode();
     }
 
     @Override

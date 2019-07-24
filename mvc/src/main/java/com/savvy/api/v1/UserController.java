@@ -109,9 +109,4 @@ public class UserController {
         }
         return user;
     }
-//    @RequestMapping(value = "/picture", method = RequestMethod.POST)
-//    public Map<String, String> uploadPicture(@RequestParam(name = "pic") MultipartFile picture) {
-//        logger.debug(picture.getOriginalFilename());
-//        return new HashMap<>();
-//    }
 }

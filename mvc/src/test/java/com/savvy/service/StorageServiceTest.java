@@ -31,7 +31,7 @@ public class StorageServiceTest {
     @Test
     public void uploadObjectTest() {
         File testFile = new File("images/laowang.png");
-        storageService.uploadObject("xxxxx", testFile);
+        storageService.uploadObject("xxxxx", "laowang-31947161.png", testFile);
         Mockito.verify(s3Fake, Mockito.times(1)).putObject(any());
     }
 

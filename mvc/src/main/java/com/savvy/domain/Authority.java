@@ -49,6 +49,12 @@ public class Authority implements GrantedAuthority {
     }
 
     @Override
+    public int hashCode() {
+        final int prime = 31;
+        return prime + this.id.hashCode();
+    }
+
+    @Override
     public boolean equals(Object other) {
         if (this == other) {
             return true;

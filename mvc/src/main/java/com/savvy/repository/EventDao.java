@@ -2,6 +2,8 @@ package com.savvy.repository;
 
 import com.savvy.domain.Event;
 
+import java.util.List;
+
 public interface EventDao extends CRUDDao<Event, Long> {
-    Event findByIdEager(Long id);
+    List<Event> findByUserId(Long userId);
 }

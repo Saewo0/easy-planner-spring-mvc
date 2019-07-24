@@ -28,13 +28,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Autowired
     private UserDetailsService userDetailsService;
 
-    private final String tokenHeader = "JwtToken";
-    private final String bear = "Bearer ";
+    private static final String tokenHeader = "JwtToken";
+    private static final String bear = "Bearer ";
 
     @Override
     protected void doFilterInternal(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, FilterChain filterChain) throws ServletException, IOException {
         // Step 1: extract token
-        String tokenWithBearer = httpServletRequest.getHeader(this.tokenHeader);
+        String tokenWithBearer = httpServletRequest.getHeader(tokenHeader);
         if (tokenWithBearer != null && tokenWithBearer.startsWith(bear)) {
             String token = tokenWithBearer.substring(bear.length());
 

@@ -32,6 +32,10 @@ public class User implements UserDetails {
     private String lastName;
     @Column(name = "first_name")
     private String firstName;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "owner", cascade = CascadeType.ALL)
+    private List<Photo> photos;
+
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "host", cascade = CascadeType.ALL)
     @JsonIgnore
     private List<Event> events;
@@ -114,6 +118,10 @@ public class User implements UserDetails {
         return this.firstName;
     }
 
+    public List<Photo> getPhotos() {
+        return this.photos;
+    }
+
     public List<Event> getEvents() {
         return this.events;
     }
@@ -135,22 +143,28 @@ public class User implements UserDetails {
 
     @Override
     public boolean isAccountNonExpired() {
-        return accountNonExpired;
+        return this.accountNonExpired;
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return accountNonLocked;
+        return this.accountNonLocked;
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return credentialsNonExpired;
+        return this.credentialsNonExpired;
     }
 
     @Override
     public boolean isEnabled() {
-        return enabled;
+        return this.enabled;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        return prime + this.id.hashCode();
     }
 
     @Override
