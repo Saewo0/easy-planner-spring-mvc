@@ -25,8 +25,8 @@ public class StorageService {
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
-    public StorageService(@Autowired AmazonS3 s3) {
-        this.s3Client = s3;
+    public StorageService(@Autowired AmazonS3 s3Client) {
+        this.s3Client = s3Client;
     }
 
     public void uploadObject(String bucketName, String s3Key, File file) {

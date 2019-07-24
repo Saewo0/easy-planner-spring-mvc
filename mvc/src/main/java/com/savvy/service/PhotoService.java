@@ -20,22 +20,24 @@ import java.util.UUID;
 @Service
 public class PhotoService {
     private static final String homeDir = System.getProperty("user.dir");
+
+    private PhotoDao photoDao;
+    private UserService userService;
+    private StorageService storageService;
+
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
-    @Autowired
-    protected PhotoDao photoDao;
-
-    @Autowired
-    private UserService userService;
-
-    @Autowired
-    private StorageService storageService;
+    public PhotoService(@Autowired PhotoDao photoDao, UserService userService, StorageService storageService) {
+        this.photoDao = photoDao;
+        this.userService = userService;
+        this.storageService = storageService;
+    }
 
     private String getS3Key(String originFileName) {
         UUID uuid = UUID.randomUUID();
         String baseName = FilenameUtils.getBaseName(originFileName);
         String extension = FilenameUtils.getExtension(originFileName);
-        return baseName + "-" + uuid + extension;
+        return baseName + "-" + uuid + "." + extension;
     }
 
 //    private File multipart2File(MultipartFile multipartFile) {

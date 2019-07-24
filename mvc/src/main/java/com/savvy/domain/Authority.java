@@ -23,6 +23,9 @@ public class Authority implements GrantedAuthority {
     @JoinColumn(name = "user_id")
     private User user;
 
+    public Authority() {
+    }
+
     public Authority(User user, String authorityRole){
         this.user = user;
         this.authorityRole = authorityRole;

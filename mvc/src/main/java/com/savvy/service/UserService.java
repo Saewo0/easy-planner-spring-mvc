@@ -16,13 +16,15 @@ import java.util.List;
 @Service
 public class UserService {
 
-    @Autowired
-    protected UserDao userDao;
+    private UserDao userDao;
+    private AuthorityDao authorityDao;
+    private BCryptPasswordEncoder encoder;
 
-    @Autowired
-    protected AuthorityDao authorityDao;
-
-    private BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+    public UserService(@Autowired UserDao userDao, AuthorityDao authorityDao) {
+        this.userDao = userDao;
+        this.authorityDao = authorityDao;
+        this.encoder = new BCryptPasswordEncoder();
+    }
 
     @Transactional
     public User createUser(User user) {

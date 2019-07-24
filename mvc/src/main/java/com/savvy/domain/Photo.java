@@ -27,6 +27,9 @@ public class Photo {
     @JoinColumn(name = "user_id")
     private User owner;
 
+    public Photo() {
+    }
+
     public Photo(String name, String s3Key, User owner) {
         this.name = name;
         this.s3Key = s3Key;
