@@ -1,7 +1,10 @@
 package com.savvy.api.v1;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.savvy.domain.Photo;
 import com.savvy.domain.User;
 import com.savvy.extend.security.JwtUtils;
+import com.savvy.service.PhotoService;
 import com.savvy.service.UserService;
 import com.savvy.service.jms.MessageSQSService;
 import javassist.NotFoundException;
@@ -15,6 +18,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Collections;
 import java.util.List;
@@ -28,6 +32,9 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private PhotoService photoService;
 
     @Autowired
     private MessageSQSService messageSQSService;
@@ -95,7 +102,15 @@ public class UserController {
     public void createUser(@RequestBody User user) {
         logger.debug("create the user info of username: " + user.getUsername());
 
-        userService.createUser(user);
+        try {
+            userService.createUser(user);
+        } catch (JsonProcessingException jpe) {
+            // TODO: return HTTP STATUS CODE
+            logger.error("xxxxx",jpe);
+            throw new ResponseStatusException(
+                    HttpStatus.INTERNAL_SERVER_ERROR, "Actor Not Found");
+
+        }
     }
 
     @RequestMapping(method = RequestMethod.GET, params = "username")
@@ -108,5 +123,18 @@ public class UserController {
             e.printStackTrace();
         }
         return user;
+    }
+
+    @RequestMapping(value = "/{user_id}/photos", method = RequestMethod.GET)
+    public List<Photo> getPhotoByUserId(@PathVariable(name = "user_id") Long userId) {
+        logger.debug("get photos by userId: " + userId);
+        try {
+            List<Photo> photos = photoService.getPhotosByUserId(userId);
+            return photos;
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+
+        }
+        return null;
     }
 }

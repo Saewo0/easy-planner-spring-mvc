@@ -10,7 +10,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.*;
 
 @Configuration
-@ComponentScan(basePackages = "com.savvy", excludeFilters = @ComponentScan.Filter(type = FilterType.REGEX, pattern = "com.savvy.api.*"))
+@ComponentScan(basePackages = "com.savvy", excludeFilters = {
+        @ComponentScan.Filter(type = FilterType.REGEX, pattern = "com.savvy.api.*"),
+        @ComponentScan.Filter(type = FilterType.REGEX, pattern = "com.savvy.config.MvcConfig")
+})
 public class AppConfig {
 
     private final Logger logger = LoggerFactory.getLogger(getClass());

@@ -63,7 +63,7 @@ public class Authority implements GrantedAuthority {
             return true;
         }
 
-        if (other == null || this.getClass() != other.getClass()) {
+        if (!(other instanceof Authority)) {
             return false;
         }
 

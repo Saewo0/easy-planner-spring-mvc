@@ -1,18 +1,13 @@
 package com.savvy.service;
 
-import com.savvy.config.AppConfig;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.savvy.domain.Authority;
 import com.savvy.domain.AuthorityRole;
 import com.savvy.domain.User;
 import com.savvy.repository.AuthorityDao;
 import org.hibernate.SessionFactory;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -21,11 +16,7 @@ import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertNotNull;
 
 
-@WebAppConfiguration
-@ContextConfiguration(classes = {AppConfig.class})
-@RunWith(SpringJUnit4ClassRunner.class)
-@ActiveProfiles("unit")
-public class UserServiceTest {
+public class UserServiceTest extends ServiceTest{
 
     @Autowired
     SessionFactory sessionFactory;
@@ -38,7 +29,7 @@ public class UserServiceTest {
 
     @Test
     @Transactional
-    public void createUserTest() {
+    public void createUserTest() throws JsonProcessingException {
 
         User expectedResult = new User();
         expectedResult.setUsername("expectedUser");

@@ -19,23 +19,22 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = SEQUENCE, generator = "users_id_seq")
     @SequenceGenerator(name = "users_id_seq", sequenceName = "users_id_seq", allocationSize = 1)
     private Long id;
-
     @Column(name = "username")
     private String username;
-
     @Column(name = "password")
     private String password;
-
     @Column(name = "email")
     private String email;
+
     @Column(name = "last_name")
     private String lastName;
     @Column(name = "first_name")
     private String firstName;
+    @Column(name = "avatar_url")
+    private String avatarUrl;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "owner", cascade = CascadeType.ALL)
     private List<Photo> photos;
-
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "host", cascade = CascadeType.ALL)
     @JsonIgnore
     private List<Event> events;
@@ -74,12 +73,16 @@ public class User implements UserDetails {
         this.password = password;
     }
 
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
     public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
 
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
+    public void setAvatarUrl(String avatarUrl) {
+        this.avatarUrl = avatarUrl;
     }
 
     public void setEnabled(Boolean enabled) {
@@ -118,17 +121,16 @@ public class User implements UserDetails {
         return this.firstName;
     }
 
+    public String getAvatarUrl() {
+        return this.avatarUrl;
+    }
+
     public List<Photo> getPhotos() {
         return this.photos;
     }
 
     public List<Event> getEvents() {
         return this.events;
-    }
-
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return this.authorities;
     }
 
     @Override
@@ -162,6 +164,11 @@ public class User implements UserDetails {
     }
 
     @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return this.authorities;
+    }
+
+    @Override
     public int hashCode() {
         final int prime = 31;
         return prime + this.id.hashCode();
@@ -173,7 +180,7 @@ public class User implements UserDetails {
             return true;
         }
 
-        if (other == null || this.getClass() != other.getClass()) {
+        if (!(other instanceof User)) {
             return false;
         }
 

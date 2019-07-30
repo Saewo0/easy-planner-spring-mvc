@@ -85,7 +85,7 @@ public class Photo {
             return true;
         }
 
-        if (other == null || this.getClass() != other.getClass()) {
+        if (!(other instanceof Photo)) {
             return false;
         }
 

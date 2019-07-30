@@ -98,7 +98,7 @@ public class Event {
             return true;
         }
 
-        if (other == null || this.getClass() != other.getClass()) {
+        if (!(other instanceof Event)) {
             return false;
         }
 

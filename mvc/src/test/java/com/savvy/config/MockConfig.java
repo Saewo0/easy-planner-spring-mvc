@@ -14,10 +14,10 @@ import java.net.URL;
 import static org.mockito.ArgumentMatchers.anyString;
 
 @Configuration
+@Profile("unit")
 public class MockConfig {
 
     @Bean
-    @Profile("unit")
     public AmazonS3 getAmazonS3Bean() throws MalformedURLException {
         AmazonS3 s3Fake = Mockito.mock(AmazonS3.class);
         Mockito.when(s3Fake.getUrl(anyString(), anyString())).thenReturn(new URL("http://IP:4567/foldername/1234?abc=xyz"));
@@ -25,7 +25,6 @@ public class MockConfig {
     }
 
     @Bean
-    @Profile("unit")
     public AmazonSQS getAmazonSQSBean() {
         AmazonSQS sqsFake = Mockito.mock(AmazonSQS.class);
         GetQueueUrlResult fakeResult = new GetQueueUrlResult();
