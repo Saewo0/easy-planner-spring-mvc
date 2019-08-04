@@ -27,10 +27,10 @@ public class PhotoService {
     }
 
     @Transactional(rollbackFor = SdkClientException.class)
-    public Photo savePhoto(String s3Key, String username) throws SdkClientException {
+    public Photo savePhoto(String name, String s3Key, String username) throws SdkClientException {
         User owner = userService.getByUsername(username);
         // TODO: process original fileName
-        Photo photo = new Photo("xxx", s3Key, owner);
+        Photo photo = new Photo(name, s3Key, owner);
         photoDao.save(photo);
 
         return null;

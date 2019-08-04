@@ -108,7 +108,7 @@ public class UserController {
             // TODO: return HTTP STATUS CODE
             logger.error("xxxxx",jpe);
             throw new ResponseStatusException(
-                    HttpStatus.INTERNAL_SERVER_ERROR, "Actor Not Found");
+                    HttpStatus.INTERNAL_SERVER_ERROR, "registration info generation failed");
 
         }
     }

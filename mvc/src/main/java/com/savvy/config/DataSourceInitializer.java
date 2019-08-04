@@ -65,7 +65,7 @@ public class DataSourceInitializer {
     public LocalSessionFactoryBean getLocalSessionFactoryBean(@Autowired DataSource dataSource) {
         LocalSessionFactoryBean sessionFactoryBean = new LocalSessionFactoryBean();
         sessionFactoryBean.setDataSource(dataSource);
-        sessionFactoryBean.setPackagesToScan(new String[] { "com.savvy.domain","com.savvy.repository.dao"});
+        sessionFactoryBean.setPackagesToScan(new String[] {"com.savvy.domain", "com.savvy.repository"});
         Properties props = getDefaultHibernate();
         props.put("hibernate.show_sql","false");
         sessionFactoryBean.setHibernateProperties(props);
@@ -78,10 +78,10 @@ public class DataSourceInitializer {
     public LocalSessionFactoryBean getLocalSessionFactoryBeanUnit(@Autowired DataSource dataSource) {
         LocalSessionFactoryBean sessionFactoryBean = new LocalSessionFactoryBean();
         sessionFactoryBean.setDataSource(dataSource);
-        sessionFactoryBean.setPackagesToScan(new String[] { "com.savvy.domain","com.savvy.repository.dao"});
+        sessionFactoryBean.setPackagesToScan(new String[] {"com.savvy.domain", "com.savvy.repository"});
         Properties props = getDefaultHibernate();
-        props.put("hibernate.show_sql","true");
-        props.put("org.hibernate.flushMode","ALWAYS");
+        props.put("hibernate.show_sql","true"); // (?, ?, ?, ?, ?, ?) ?
+        props.put("org.hibernate.flushMode","ALWAYS"); // ?
         sessionFactoryBean.setHibernateProperties(props);
         return sessionFactoryBean;
     }
@@ -90,7 +90,6 @@ public class DataSourceInitializer {
         Properties props = new Properties();
         props.put("hibernate.dialect", "org.hibernate.spatial.dialect.postgis.PostgisDialect");
         props.put("hibernate.hbm2ddl.auto", "validate");
-//        props.put("hibernate.physical_naming_strategy", "io.ascending.training.extend.hibernate.ImprovedNamingStrategy");
         props.put("hibernate.connection.charSet","UTF-8");
         props.put("hibernate.show_sql","true");
         return props;
