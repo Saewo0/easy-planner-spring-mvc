@@ -28,7 +28,7 @@ public class JmsConfig {
 
     @Bean(name="connectionFactory")
     public SQSConnectionFactory getSQSConnectionFactory() {
-        SQSConnectionFactory factory = new SQSConnectionFactory( new ProviderConfiguration(),amazonSQSClient);
+        SQSConnectionFactory factory = new SQSConnectionFactory( new ProviderConfiguration(), amazonSQSClient);
         return factory;
     }
 

@@ -76,9 +76,9 @@ public class SendGridEmailService {
             request.setEndpoint("mail/send");
             request.setBody(mail.build());
             Response response = sg.api(request);
-            System.out.println(response.getStatusCode());
-            System.out.println(response.getBody());
-            System.out.println(response.getHeaders());
+            logger.debug("response status code" + response.getStatusCode());
+            logger.debug("response body" + response.getBody());
+            logger.debug("response header" + response.getHeaders());
         } catch (IOException ex) {
             throw ex;
         }
