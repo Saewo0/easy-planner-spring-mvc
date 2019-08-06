@@ -1,4 +1,4 @@
-package com.savvy.service;
+package com.savvy.repository;
 
 import com.savvy.config.AppConfig;
 import org.junit.runner.RunWith;
@@ -11,5 +11,5 @@ import org.springframework.test.context.web.WebAppConfiguration;
 @ContextConfiguration(classes = {AppConfig.class})
 @RunWith(SpringJUnit4ClassRunner.class)
 @ActiveProfiles("unit")
-public abstract class ServiceTest {
+public abstract class DaoTest {
 }

@@ -1,16 +1,10 @@
 package com.savvy.repository;
 
-import com.savvy.config.AppConfig;
 import com.savvy.domain.Event;
 import com.savvy.domain.User;
 import org.hibernate.SessionFactory;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.OffsetDateTime;
@@ -19,11 +13,7 @@ import java.util.List;
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertNotNull;
 
-@WebAppConfiguration
-@ContextConfiguration(classes = {AppConfig.class})
-@RunWith(SpringJUnit4ClassRunner.class)
-@ActiveProfiles("unit")
-public class UserDaoTest {
+public class UserDaoTest extends DaoTest {
     @Autowired
     private UserDao userDao;
     @Autowired
@@ -78,7 +68,7 @@ public class UserDaoTest {
 
     @Test
     @Transactional
-    public void findByUsernameIgnoreCaseTest() {
+    public void findByUsernameTest() {
         User expectedResult = new User();
         expectedResult.setUsername("real");
         expectedResult.setPassword("realPassword");
@@ -87,15 +77,15 @@ public class UserDaoTest {
         expectedResult.setEmail("realUser@test.com");
 
         User fakeResult = new User();
-        expectedResult.setUsername("fake");
-        expectedResult.setPassword("fakePassword");
-        expectedResult.setFirstName("Fake");
-        expectedResult.setLastName("Test");
-        expectedResult.setEmail("fakeUser@test.com");
+        fakeResult.setUsername("fake");
+        fakeResult.setPassword("fakePassword");
+        fakeResult.setFirstName("Fake");
+        fakeResult.setLastName("Test");
+        fakeResult.setEmail("fakeUser@test.com");
 
         userDao.save(expectedResult);
         userDao.save(fakeResult);
-        User actualResult = userDao.findByUsername("Real");
+        User actualResult = userDao.findByUsername("real");
 
         assertEquals(expectedResult, actualResult);
     }
