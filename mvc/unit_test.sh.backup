@@ -1,0 +1,14 @@
+#! /bin/sh
+
+mvn
+-Dspring.profiles.active=unit
+-Ddatabase.serverName=jdbc:postgresql://localhost:5432/easy_planner_unit
+-Ddatabase.username=admin
+-Ddatabase.password=password
+-Daws.region=us-east-1
+-Daws.accessKeyId=???
+-Daws.secretKey=???
+-Djms.queue.name=easy-planner
+-Djwt.expiration=86400
+-Djwt.secret=fxxk
+test

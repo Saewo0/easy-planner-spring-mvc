@@ -68,7 +68,7 @@ public class UserController {
     @RequestMapping(value = "/login", method = RequestMethod.POST, produces = "application/json")
     @ResponseStatus(HttpStatus.ACCEPTED)
     public Map<String, String> printUsernameAndPassword(@RequestBody User user) {
-        logger.debug("Print the user info: " + user.getUsername() + " " + user.getPassword());
+        logger.debug("Login: user with username " + user.getUsername());
         UsernamePasswordAuthenticationToken notFullyAuth = new UsernamePasswordAuthenticationToken(
                 user.getUsername(),
                 user.getPassword()
@@ -81,15 +81,15 @@ public class UserController {
                 final String token = jwtUtils.generateToken(userDetails);
                 return Collections.singletonMap("Token", token);
             } catch (NotFoundException nfe) {
-                nfe.printStackTrace();
+                logger.error(nfe.getMessage());
                 // return something indicating user not exist
             } catch (NullPointerException npe) {
-                npe.printStackTrace();
+                logger.error(npe.getMessage());
                 // return something indicating EMPTY username/email
                 return Collections.singletonMap("Error", "EMPTY username/email");
             }
         } catch (AuthenticationException ae) {
-            logger.debug(ae.getMessage());
+            logger.error(ae.getMessage());
             // return something indicating invalid username/password
             return Collections.singletonMap("Error", "Invalid Username/Password");
         }
@@ -106,7 +106,7 @@ public class UserController {
             userService.createUser(user);
         } catch (JsonProcessingException jpe) {
             // TODO: return HTTP STATUS CODE
-            logger.error("xxxxx",jpe);
+            logger.error("Register: ", jpe);
             throw new ResponseStatusException(
                     HttpStatus.INTERNAL_SERVER_ERROR, "registration info generation failed");
 
@@ -120,7 +120,7 @@ public class UserController {
         try {
             user = userService.getByUsernameOrEmail(username);
         } catch (NotFoundException | NullPointerException e) {
-            e.printStackTrace();
+            logger.error("Get user by username " + username, e);
         }
         return user;
     }

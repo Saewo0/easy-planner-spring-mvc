@@ -29,6 +29,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private JwtAuthenticationFilter jwtAuthenticationFilter;
 
+    @Autowired
+    private RestAuthenticationEntryPoint restAuthenticationEntryPoint;
+
 //    @Autowired
 //    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
 //        auth.inMemoryAuthentication()
@@ -40,12 +43,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.addFilterAt(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
             .csrf().disable()
-            .authorizeRequests().antMatchers("/api/user/register", "/api/user/login").permitAll()
+            .authorizeRequests().antMatchers("/api/user/register", "/api/user/login", "/api/health").permitAll()
             .anyRequest().authenticated()
             .and()
             .authorizeRequests().antMatchers("/api/**").hasAnyRole("REGISTERED_USER","ADMIN")
             .and()
-            .formLogin();
+            .exceptionHandling().authenticationEntryPoint(restAuthenticationEntryPoint);
+//            .formLogin();
     }
 
     @Autowired
@@ -58,13 +62,4 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public AuthenticationManager getAuthenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();
     }
-
-//    protected void configure(HttpSecurity http) throws Exception {
-//        http.csrf().disable()
-//            .authorizeRequests().antMatchers("/api/user/users").permitAll()
-//            .anyRequest().authenticated()
-//            .and()
-//            .exceptionHandling()
-//            .authenticationEntryPoint(entryPoint);
-//    }
 }

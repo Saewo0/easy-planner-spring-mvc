@@ -1,5 +1,6 @@
 package com.savvy.extend.security;
 
+import com.savvy.extend.exception.InvalidTokenException;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -44,18 +45,13 @@ public class JwtUtils {
                    .compact();
     }
 
-    public String getUsernameFromToken(String token) {
-        String username;
-        try {
-            final Claims claims = getClaimsFromToken(token);
-            username = claims.getSubject();
-        } catch (Exception e) {
-            username = null;
-        }
+    public String getUsernameFromToken(String token) throws InvalidTokenException {
+        final Claims claims = getClaimsFromToken(token);
+        String username = claims.getSubject();
         return username;
     }
 
-    private Claims getClaimsFromToken(String token) {
+    private Claims getClaimsFromToken(String token) throws InvalidTokenException {
         Claims claims;
         try {
             claims = Jwts.parser()
@@ -63,7 +59,7 @@ public class JwtUtils {
                     .parseClaimsJws(token)
                     .getBody();
         } catch (Exception e) {
-            claims = null;
+            throw new InvalidTokenException("Invalid Token", e);
         }
         return claims;
     }

@@ -1,5 +1,6 @@
 package com.savvy.extend.security;
 
+import com.savvy.extend.exception.InvalidTokenException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +8,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -39,14 +41,20 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             String token = tokenWithBearer.substring(bear.length());
 
             // Step 2: verify token
-            String username = jwtUtils.getUsernameFromToken(token);
-            UserDetails userDetails = userDetailsService.loadUserByUsername(username);
-                // Substep: our own logic
-            // Step 3: authenticated
-            UsernamePasswordAuthenticationToken fullyAuthentication =
-                    new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+            try {
+                String username = jwtUtils.getUsernameFromToken(token);
+                UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+                    // Substep: our own logic
+                // Step 3: authenticated
+                UsernamePasswordAuthenticationToken fullyAuthentication =
+                        new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
 
-            SecurityContextHolder.getContext().setAuthentication(fullyAuthentication);
+                SecurityContextHolder.getContext().setAuthentication(fullyAuthentication);
+            } catch (InvalidTokenException | UsernameNotFoundException e) {
+                logger.error(e.getMessage());
+            }
+        } else {
+            logger.error("No token found in the request");
         }
         filterChain.doFilter(httpServletRequest, httpServletResponse);
     }

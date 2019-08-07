@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,12 +21,13 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     private UserService userService;
 
     @Override
-    public UserDetails loadUserByUsername(String keyWord) {
-        User domainUser = null;
+    public UserDetails loadUserByUsername(String keyWord) throws UsernameNotFoundException {
+        User domainUser;
         try {
             domainUser = userService.getByUsernameOrEmail(keyWord);
         } catch (NotFoundException | NullPointerException e) {
-            logger.error("can't find user by keyword: "+keyWord,e);
+            logger.error("can't find user by keyword: " + keyWord, e);
+            throw new UsernameNotFoundException("keyword not found");
         }
 
         List<Authority> authorities = userService.getUserAuthorities(domainUser);

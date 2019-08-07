@@ -13,11 +13,8 @@ import org.springframework.context.annotation.Profile;
 @Profile({"dev", "test", "stage", "prod"})
 public class AppConfig {
 
-    @Value("${sendgrid.apiKey}")
-    private String apiKey;
-
     @Bean
-    public SendGrid getSendGridBean(){
+    public SendGrid getSendGridBean(@Value("${sendgrid.apiKey}") String apiKey){
         return new SendGrid(apiKey);
     }
 
