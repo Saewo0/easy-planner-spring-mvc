@@ -5,9 +5,8 @@
 .idea
 *.iml
 
-# ops
-ops
 *.properties
+unit_test.sh
 
 # ???
 out
