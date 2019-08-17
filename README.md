@@ -74,7 +74,7 @@ The application also relies on the following parts:
 
 6. Configure Spring Security and modify User entity for Authentication and Authorization
 
-7. Integrate third-party services such as Amazon SQS & S3, and do mock tests
+7. Integrate third-party services such as Amazon SQS & S3, and do mock tests [Check here](https://blog.frugalops.com/integrate-amazon-sqs-and-sendgrid-with-springboot-application/)
 
 8. Create worker applications to process messages from SQS
 
